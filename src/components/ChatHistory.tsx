@@ -22,25 +22,27 @@ export default function ChatHistory({
       .map((key) => {
         const messages = JSON.parse(sessionStorage.getItem(key) || '[]');
         const lastUserMessage = [...messages].reverse().find(msg => msg.sender === 'user');
-        const lastTimestamp = messages.length ? messages[messages.length - 1].timestamp : 0; // Get last message timestamp
+        const lastTimestamp = messages.length ? messages[messages.length - 1].timestamp : 0;
 
         return {
           id: key.replace('chat-', ''),
           preview: lastUserMessage ? lastUserMessage.text.slice(0, 20) : 'New Chat',
-          timestamp: lastTimestamp, // Store timestamp for sorting
+          timestamp: lastTimestamp,
         };
       })
-      .sort((a, b) => b.timestamp - a.timestamp); // Sort chats by timestamp (newest first)
+      .sort((a, b) => b.timestamp - a.timestamp);
 
     setChats(savedChats);
   };
 
   useEffect(() => {
-    loadChats();
+    loadChats(); // Initial load
     const handleStorageChange = () => {
-      loadChats();
+      loadChats(); // Load chats when sessionStorage is updated
     };
     window.addEventListener('storage', handleStorageChange);
+
+    // Cleanup the event listener on unmount
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
@@ -54,6 +56,8 @@ export default function ChatHistory({
       {/* Toggle Button (Only on Mobile) */}
       {!isSidebarOpen && (
         <button
+          type="button"
+          title="Open Chat History"
           onClick={onToggleSidebar}
           className="absolute left-5 top-20 z-50 rounded-lg bg-white p-2 shadow-md hover:bg-gray-300"
         >
@@ -64,12 +68,7 @@ export default function ChatHistory({
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
       )}
@@ -80,11 +79,10 @@ export default function ChatHistory({
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full sm:block'
         }`}
       >
-
-        {/* ✅ Header Section - FIXED ALIGNMENT */}
+        {/* Header Section */}
         <div className="flex items-center justify-between border-b bg-blue-200 px-4 py-3">
-          {/* ✅ Left - Pencil Icon (New Chat) */}
-          <button onClick={onNewChat} className="rounded-lg p-2 hover:bg-gray-200">
+          {/* Left - Pencil Icon (New Chat) */}
+          <button type="button" title="New Chat" onClick={onNewChat} className="rounded-lg p-2 hover:bg-gray-200">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="size-6"
@@ -101,16 +99,11 @@ export default function ChatHistory({
             </svg>
           </button>
 
-          {/* ✅ Center - "Chat History" Title (Properly Centered) */}
-          <h2 className="text-center text-lg font-semibold text-gray-700">
-            Chat History
-          </h2>
+          {/* Center - "Chat History" Title */}
+          <h2 className="text-center text-lg font-semibold text-gray-700">Chat History</h2>
 
-          {/* ✅ Right - Close Button (Only on Mobile) */}
-          <button
-            onClick={onToggleSidebar}
-            className="rounded-lg p-2 hover:bg-gray-200"
-          >
+          {/* Right - Close Button (Only on Mobile) */}
+          <button type="button" title="toggle" onClick={onToggleSidebar} className="rounded-lg p-2 hover:bg-gray-200">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="size-6"
@@ -141,11 +134,13 @@ export default function ChatHistory({
                       key={chat.id}
                       className="relative mb-2 flex items-center justify-between rounded-lg bg-gray-100 p-3 shadow-sm transition hover:bg-gray-200"
                     >
-                      <button className="flex-1 text-left text-gray-900" onClick={() => onSelect(chat.id)}>
+                      <button type="button" title="chat" className="flex-1 text-left text-gray-900" onClick={() => onSelect(chat.id)}>
                         {chat.preview}
                         ...
                       </button>
                       <button
+                        type="button"
+                        title="Delete Chat"
                         onClick={() => handleDeleteChat(chat.id)}
                         className="ml-2 text-gray-500 hover:text-red-500"
                       >

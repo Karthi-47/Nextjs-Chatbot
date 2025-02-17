@@ -51,14 +51,14 @@ export default function Chat({ chatId, isSidebarOpen }: { chatId: string; isSide
     }
 
     const userMessage: Message = {
-      id: generateUUID(), // Use the utility function
+      id: generateUUID(),
       sender: 'user',
       text: input,
       timestamp: Date.now(),
     };
 
     const aiResponse: Message = {
-      id: generateUUID(), // Use the utility function
+      id: generateUUID(),
       sender: 'ai',
       text: 'This is a default AI response.',
       timestamp: Date.now(),
@@ -67,6 +67,10 @@ export default function Chat({ chatId, isSidebarOpen }: { chatId: string; isSide
     const newMessages = [...messages, userMessage, aiResponse];
     setMessages(newMessages);
     setInput('');
+
+    // Update chat history in sessionStorage
+    sessionStorage.setItem(`chat-${chatId}`, JSON.stringify(newMessages));
+    window.dispatchEvent(new Event('storage'));
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -97,7 +101,7 @@ export default function Chat({ chatId, isSidebarOpen }: { chatId: string; isSide
       {/* Chat input */}
       <div
         className={`fixed bottom-10 flex items-center justify-center p-4 transition-all duration-300 ${
-          isSidebarOpen ? 'w-full sm:right-14 sm:max-w-[900px]' : 'w-full sm:left-48 sm:max-w-[900px]'
+          isSidebarOpen ? 'w-full sm:right-14 sm:max-w-[900px]' : 'right-40 w-full sm:left-48 sm:max-w-[900px]'
         }`}
         style={{
           width: `calc(100% - ${isSidebarOpen ? '20rem' : '0'})`,
@@ -112,6 +116,8 @@ export default function Chat({ chatId, isSidebarOpen }: { chatId: string; isSide
           placeholder="Type a message..."
         />
         <button
+          type="button"
+          title="Send Message"
           onClick={sendMessage}
           className="ml-2 flex items-center justify-center rounded-md bg-blue-500 p-3 text-white transition-transform hover:scale-110 hover:bg-blue-600"
         >
@@ -123,11 +129,7 @@ export default function Chat({ chatId, isSidebarOpen }: { chatId: string; isSide
             stroke="currentColor"
             strokeWidth={2}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 12h14M12 5l7 7-7 7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </button>
       </div>
