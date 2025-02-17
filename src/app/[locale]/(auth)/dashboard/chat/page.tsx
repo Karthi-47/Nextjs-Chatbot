@@ -18,7 +18,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-[100px]">
       {/* Sidebar */}
       <div className={`transition-all duration-300 ${isSidebarOpen ? 'w-80' : 'w-0'}`}>
         <ChatHistory

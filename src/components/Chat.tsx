@@ -81,16 +81,16 @@ export default function Chat({ chatId, isSidebarOpen }: { chatId: string; isSide
   };
 
   return (
-    <div className="flex h-screen flex-col text-white sm:bg-blue-100">
+    <div className="flex h-screen flex-col text-white sm:bg-blue-200">
       {/* Chat messages */}
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         {messages.map(msg => (
           <div
             key={msg.id}
-            className={`mx-auto mt-12 max-w-xs rounded-lg p-3 transition-all duration-300 ease-in-out ${
+            className={`mx-auto mt-6 max-w-xs rounded-lg p-3 transition-all duration-300 ease-in-out ${
               msg.sender === 'user'
-                ? 'bg-blue-400 text-white sm:mr-0'
-                : 'bg-gray-400 text-white sm:ml-0'
+                ? 'bg-blue-400 text-white sm:mr-20'
+                : 'bg-gray-400 text-white sm:ml-20'
             }`}
           >
             {msg.text}
@@ -100,38 +100,42 @@ export default function Chat({ chatId, isSidebarOpen }: { chatId: string; isSide
 
       {/* Chat input */}
       <div
-        className={`fixed bottom-10 flex items-center justify-center p-4 transition-all duration-300 ${
-          isSidebarOpen ? 'w-full sm:right-14 sm:max-w-[900px]' : 'right-40 w-full sm:left-48 sm:max-w-[900px]'
-        }`}
+        className={`mx-auto flex items-center justify-center p-4 transition-all duration-300 sm:mb-10 
+    ${isSidebarOpen ? 'w-full sm:right-14 sm:min-w-[880px]' : 'right-40 w-full sm:left-48 sm:max-w-[900px]'}
+  `}
         style={{
           width: `calc(100% - ${isSidebarOpen ? '20rem' : '0'})`,
         }}
       >
-        <input
-          type="text"
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className="flex-1 rounded-md bg-gray-700 p-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Type a message..."
-        />
-        <button
-          type="button"
-          title="Send Message"
-          onClick={sendMessage}
-          className="ml-2 flex items-center justify-center rounded-md bg-blue-500 p-3 text-white transition-transform hover:scale-110 hover:bg-blue-600"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="size-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </button>
+        <div className="fixed bottom-0 left-0 w-full bg-gray-800 p-4 sm:static sm:bg-transparent">
+          <div className="mx-auto flex w-full max-w-[900px]">
+            <input
+              type="text"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="flex-1 rounded-md bg-gray-700 p-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Type a message..."
+            />
+            <button
+              type="button"
+              title="Send Message"
+              onClick={sendMessage}
+              className="ml-2 flex items-center justify-center rounded-md bg-blue-500 p-3 text-white transition-transform hover:scale-110 hover:bg-blue-600"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="size-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

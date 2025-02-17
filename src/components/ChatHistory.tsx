@@ -75,12 +75,12 @@ export default function ChatHistory({
 
       {/* Chat Sidebar (Drawer on Mobile, Fixed on Desktop) */}
       <div
-        className={`absolute left-0 z-40 h-screen w-80 bg-gray-300 shadow-lg transition-transform duration-300 sm:relative ${
+        className={`absolute left-0 z-40 h-screen w-80 bg-blue-50 shadow-lg transition-transform duration-300 sm:relative ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full sm:block'
         }`}
       >
         {/* Header Section */}
-        <div className="flex items-center justify-between border-b bg-blue-200 px-4 py-3">
+        <div className="flex items-center justify-between border-b bg-blue-50 px-4 py-3">
           {/* Left - Pencil Icon (New Chat) */}
           <button type="button" title="New Chat" onClick={onNewChat} className="rounded-lg p-2 hover:bg-gray-200">
             <svg
@@ -132,7 +132,7 @@ export default function ChatHistory({
                   {chats.map(chat => (
                     <li
                       key={chat.id}
-                      className="relative mb-2 flex items-center justify-between rounded-lg bg-gray-100 p-3 shadow-sm transition hover:bg-gray-200"
+                      className="relative mb-2 flex items-center justify-between rounded-lg bg-gray-100 p-3 shadow-lg transition hover:bg-gray-300"
                     >
                       <button type="button" title="chat" className="flex-1 text-left text-gray-900" onClick={() => onSelect(chat.id)}>
                         {chat.preview}
