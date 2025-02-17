@@ -9,47 +9,56 @@ type Message = {
   timestamp: number;
 };
 
+// Utility function to generate a UUID
+function generateUUID(): string {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 export default function Chat({ chatId }: { chatId: string }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
-  const [isNewChat, setIsNewChat] = useState(true); // 🔥 Track if the chat is new
+  const [isNewChat, setIsNewChat] = useState(true);
 
-  // Load messages from sessionStorage when chatId changes
   useEffect(() => {
     const savedChats = sessionStorage.getItem(`chat-${chatId}`);
     if (savedChats) {
       setMessages(JSON.parse(savedChats));
-      setIsNewChat(false); // Chat is not new if it already exists in sessionStorage
+      setIsNewChat(false);
     } else {
       setMessages([]);
-      setIsNewChat(true); // Chat is new if it doesn't exist in sessionStorage
+      setIsNewChat(true);
     }
   }, [chatId]);
 
-  // Save messages to sessionStorage and trigger chat history update
   useEffect(() => {
     if (messages.length > 0 && isNewChat) {
       sessionStorage.setItem(`chat-${chatId}`, JSON.stringify(messages));
-      window.dispatchEvent(new Event('storage')); // Notify chat history to update
-      setIsNewChat(false); // Mark the chat as no longer new after the first save
+      window.dispatchEvent(new Event('storage'));
+      setIsNewChat(false);
     }
-  }, [messages, chatId, isNewChat]); // 🔥 Add isNewChat to dependencies
+  }, [messages, chatId, isNewChat]);
 
-  // Handle sending messages
   const sendMessage = () => {
     if (!input.trim()) {
       return;
     }
 
     const userMessage: Message = {
-      id: crypto.randomUUID(),
+      id: generateUUID(), // Use the utility function
       sender: 'user',
       text: input,
       timestamp: Date.now(),
     };
 
     const aiResponse: Message = {
-      id: crypto.randomUUID(),
+      id: generateUUID(), // Use the utility function
       sender: 'ai',
       text: 'This is a default AI response.',
       timestamp: Date.now(),
@@ -60,7 +69,6 @@ export default function Chat({ chatId }: { chatId: string }) {
     setInput('');
   };
 
-  // Handle "Enter" key to send messages
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -75,7 +83,7 @@ export default function Chat({ chatId }: { chatId: string }) {
         {messages.map(msg => (
           <div
             key={msg.id}
-            className={`max-w-xs rounded-lg p-3 transition-all duration-300 ease-in-out ${
+            className={`mx-1 mt-12 max-w-xs rounded-lg p-3 transition-all duration-300 ease-in-out ${
               msg.sender === 'user'
                 ? 'ml-auto bg-blue-500 text-white'
                 : 'mr-auto bg-gray-700 text-white'
