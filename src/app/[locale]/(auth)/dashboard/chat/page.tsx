@@ -24,14 +24,16 @@ export default function Page() {
         <ChatHistory
           onSelect={setChatId}
           onNewChat={handleNewChat}
-          isSidebarOpen={isSidebarOpen}
+          isSidebarOpen={isSidebarOpen} // Passing isSidebarOpen to ChatHistory component
           onToggleSidebar={toggleSidebar}
         />
       </div>
 
       {/* Chat Area - Adjust width dynamically */}
       <div className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-0' : 'ml-0'}`}>
-        <Chat chatId={chatId} />
+        <Chat chatId={chatId} isSidebarOpen={isSidebarOpen} />
+        {' '}
+        {/* Passing isSidebarOpen to Chat */}
       </div>
     </div>
   );

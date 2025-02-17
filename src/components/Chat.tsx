@@ -21,7 +21,7 @@ function generateUUID(): string {
   });
 }
 
-export default function Chat({ chatId }: { chatId: string }) {
+export default function Chat({ chatId, isSidebarOpen }: { chatId: string; isSidebarOpen: boolean }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isNewChat, setIsNewChat] = useState(true);
@@ -77,16 +77,16 @@ export default function Chat({ chatId }: { chatId: string }) {
   };
 
   return (
-    <div className="flex h-screen flex-col bg-gray-900 text-white">
+    <div className="flex h-screen flex-col text-white sm:bg-blue-100">
       {/* Chat messages */}
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         {messages.map(msg => (
           <div
             key={msg.id}
-            className={`mx-1 mt-12 max-w-xs rounded-lg p-3 transition-all duration-300 ease-in-out ${
+            className={`mx-auto mt-12 max-w-xs rounded-lg p-3 transition-all duration-300 ease-in-out ${
               msg.sender === 'user'
-                ? 'ml-auto bg-blue-500 text-white'
-                : 'mr-auto bg-gray-700 text-white'
+                ? 'bg-blue-400 text-white sm:mr-0'
+                : 'bg-gray-400 text-white sm:ml-0'
             }`}
           >
             {msg.text}
@@ -95,7 +95,14 @@ export default function Chat({ chatId }: { chatId: string }) {
       </div>
 
       {/* Chat input */}
-      <div className="flex items-center rounded-t-md bg-gray-800 p-4 shadow-lg">
+      <div
+        className={`fixed bottom-10 flex items-center justify-center p-4 transition-all duration-300 ${
+          isSidebarOpen ? 'w-full sm:right-14 sm:max-w-[900px]' : 'w-full sm:left-48 sm:max-w-[900px]'
+        }`}
+        style={{
+          width: `calc(100% - ${isSidebarOpen ? '20rem' : '0'})`,
+        }}
+      >
         <input
           type="text"
           value={input}
@@ -106,9 +113,22 @@ export default function Chat({ chatId }: { chatId: string }) {
         />
         <button
           onClick={sendMessage}
-          className="ml-2 rounded-md bg-green-500 px-4 py-2 hover:bg-green-600"
+          className="ml-2 flex items-center justify-center rounded-md bg-blue-500 p-3 text-white transition-transform hover:scale-110 hover:bg-blue-600"
         >
-          Send
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="size-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M5 12h14M12 5l7 7-7 7"
+            />
+          </svg>
         </button>
       </div>
     </div>
