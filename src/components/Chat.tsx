@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type Message = {
   id: string;
@@ -20,11 +20,19 @@ function generateUUID(): string {
   });
 }
 
-export default function Chat({ chatId, isSidebarOpen }: { chatId: string; isSidebarOpen: boolean }) {
+export default function Chat({
+  chatId,
+  isSidebarOpen,
+}: {
+  chatId: string;
+  isSidebarOpen: boolean;
+}) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isNewChat, setIsNewChat] = useState(true);
+
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   // Load messages from sessionStorage when chatId changes
   useEffect(() => {
@@ -46,6 +54,13 @@ export default function Chat({ chatId, isSidebarOpen }: { chatId: string; isSide
       setIsNewChat(true);
     }
   }, [messages, chatId]);
+
+  // Auto-scroll to the latest message
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   const sendMessage = () => {
     if (!input.trim()) {
@@ -89,7 +104,7 @@ export default function Chat({ chatId, isSidebarOpen }: { chatId: string; isSide
   return (
     <div className="flex h-screen flex-col">
       {/* Chat Messages */}
-      <div className="flex flex-1 flex-col items-center space-y-4 overflow-y-auto p-4 md:items-start">
+      <div className="scrollbar-hide flex flex-1 flex-col items-center space-y-4 overflow-y-auto p-4 md:items-start">
         {/* Show "Start a new chat" when no messages */}
         {messages.length === 0 && !isTyping
           ? (
@@ -136,6 +151,9 @@ export default function Chat({ chatId, isSidebarOpen }: { chatId: string; isSide
             </div>
           </div>
         )}
+
+        {/* This div ensures the chat auto-scrolls to the latest message */}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Chat Input */}

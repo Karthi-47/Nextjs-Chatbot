@@ -48,7 +48,7 @@ export default function DashboardLayout(props: { children: React.ReactNode }) {
       </div>
 
       <div className="min-h-[calc(100vh-72px)] bg-muted">
-        <div className="max-w-screen-1xl mx-auto  pb-16">
+        <div className="max-w-screen-1xl mx-auto px-3 py-6">
           {props.children}
         </div>
       </div>
