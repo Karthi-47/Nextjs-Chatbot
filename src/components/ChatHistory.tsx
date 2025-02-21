@@ -85,7 +85,7 @@ export default function ChatHistory({
       {!isSidebarOpen && (
         <button
           onClick={onToggleSidebar}
-          className="fixed left-3 top-20 z-50 rounded-lg bg-white p-2 shadow-md"
+          className="fixed left-3 z-50 rounded-lg bg-white p-2 shadow-md"
         >
           <svg
             className="size-7 text-gray-800 dark:text-white"
@@ -109,7 +109,7 @@ export default function ChatHistory({
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 top-16 z-50 w-80 bg-white shadow-lg transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 top-16 z-50 w-72 bg-white shadow-lg transition-transform duration-300 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

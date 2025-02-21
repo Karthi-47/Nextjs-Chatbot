@@ -58,7 +58,9 @@ export default function Chat({
   // Auto-scroll to the latest message
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }, 100); // Small delay for smooth scrolling
     }
   }, [messages]);
 
@@ -143,7 +145,7 @@ export default function Chat({
 
         {/* Typing Indicator (shown when bot is typing) */}
         {isTyping && (
-          <div className="animate-fade-in flex w-full justify-start">
+          <div className="animate-fade-in flex w-full sm:pl-24">
             <div className="flex space-x-1 rounded-xl bg-gray-200 px-4 py-2 shadow-md">
               <span className="size-2 animate-bounce rounded-full bg-gray-600"></span>
               <span className="size-2 animate-bounce rounded-full bg-gray-600 delay-150"></span>
