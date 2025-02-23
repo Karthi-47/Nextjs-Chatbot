@@ -161,9 +161,13 @@ export default function Chat({
       {/* Chat Input */}
       <div
         className={`sticky bottom-0 p-6 transition-all duration-300 ${
-          isSidebarOpen ? 'mx-auto w-[calc(100%-26rem)]' : 'w-full'
+          isSidebarOpen ? 'mx-auto w-[calc(100%-26rem)]' : 'left-0 w-full'
         }`}
-        style={{ position: 'fixed', bottom: 0 }} // Ensure input stays at the bottom
+        style={{
+          position: messages.length === 0 ? 'absolute' : 'fixed', // Use absolute for center, fixed for bottom
+          bottom: messages.length === 0 ? '50%' : '0', // Center when no messages, bottom otherwise
+          transform: messages.length === 0 ? 'translateY(100%)' : 'none', // Center vertically
+        }}
       >
         <div className="mx-auto flex max-w-2xl items-center rounded-lg border border-gray-500 bg-gray-200 p-1">
           <input
