@@ -120,7 +120,7 @@ export default function ChatHistory({
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 top-16 z-50 mt-2 w-72 bg-white shadow-lg transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 top-16 z-50 mt-2 w-80 bg-white shadow-lg transition-transform duration-300 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         style={{ maxHeight: 'calc(100vh - 4rem)' }} // Prevent overflow
