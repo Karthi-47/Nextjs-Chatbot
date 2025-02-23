@@ -49,19 +49,20 @@ export default function ChatHistory({
           return null;
         }
 
-        const lastUserMessage = [...messages].reverse().find(msg => msg.sender === 'user');
-        const lastTimestamp = messages.length ? messages[messages.length - 1].timestamp : 0;
+        // Get the first user message instead of the last
+        const firstUserMessage = messages.find((msg: { sender: string }) => msg.sender === 'user');
+        const firstTimestamp = messages.length ? messages[0].timestamp : 0; // Get first message timestamp
 
         return {
           id: key.replace('chat-', ''),
-          preview: lastUserMessage ? lastUserMessage.text.slice(0, 20) : 'New Chat',
-          timestamp: lastTimestamp,
+          preview: firstUserMessage ? firstUserMessage.text.slice(0, 20) : 'New Chat',
+          timestamp: firstTimestamp, // Use first message timestamp for sorting
         };
       })
       .filter(chat => chat !== null) as { id: string; preview: string; timestamp: number }[];
 
     const uniqueChats = Array.from(new Map(savedChats.map(chat => [chat.id, chat])).values());
-    const sortedChats = uniqueChats.sort((a, b) => b.timestamp - a.timestamp);
+    const sortedChats = uniqueChats.sort((a, b) => b.timestamp - a.timestamp); // Sort by first message timestamp
 
     setChats(sortedChats);
   };
@@ -79,13 +80,23 @@ export default function ChatHistory({
     resetChat();
   };
 
+  // Modified function to close the sidebar on mobile when "New Chat" is clicked
+  const handleNewChat = () => {
+    onNewChat();
+    if (isMobile) {
+      onToggleSidebar(); // Close the sidebar only on mobile
+    }
+  };
+
   return (
     <>
       {/* Toggle Sidebar Button (Mobile) */}
       {!isSidebarOpen && (
         <button
+          type="button"
+          title="ToggleSidebar"
           onClick={onToggleSidebar}
-          className="fixed left-3 z-50 rounded-lg bg-white p-2 shadow-md"
+          className="fixed left-2 top-20 z-50 rounded-lg bg-white p-2 shadow-md"
         >
           <svg
             className="size-7 text-gray-800 dark:text-white"
@@ -109,13 +120,14 @@ export default function ChatHistory({
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 top-16 z-50 w-72 bg-white shadow-lg transition-transform duration-300 ${
+        className={`fixed inset-y-0 left-0 top-16 z-50 mt-2 w-72 bg-white shadow-lg transition-transform duration-300 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
+        style={{ maxHeight: 'calc(100vh - 4rem)' }} // Prevent overflow
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b bg-white p-4">
-          <button onClick={onNewChat} className="rounded-lg p-2 hover:bg-gray-100">
+        <div className="flex items-center justify-between border-b bg-gray-300 p-3">
+          <button type="button" title="NewChat" onClick={handleNewChat} className="rounded-lg p-2 hover:bg-gray-100">
             <svg
               className="size-7 text-gray-800 dark:text-white"
               aria-hidden="true"
@@ -135,7 +147,7 @@ export default function ChatHistory({
             </svg>
           </button>
           <h2 className="text-lg font-semibold">Chat History</h2>
-          <button onClick={onToggleSidebar} className="rounded-lg p-2 hover:bg-gray-100">
+          <button type="button" title="ToggleSidebar" onClick={onToggleSidebar} className="rounded-lg p-2 hover:bg-gray-100">
             <svg
               className="size-7 text-gray-800 dark:text-white"
               aria-hidden="true"
@@ -157,7 +169,7 @@ export default function ChatHistory({
         </div>
 
         {/* Chat List */}
-        <div className="h-[calc(100vh-8rem)] overflow-y-auto p-4">
+        <div className="h-[calc(100vh-8rem)] overflow-y-auto border-t border-gray-400 bg-gray-300 p-4">
           {chats.length === 0
             ? (
                 <p className="text-center text-gray-500">No chat history</p>
@@ -167,9 +179,11 @@ export default function ChatHistory({
                   {chats.map(chat => (
                     <li
                       key={chat.id}
-                      className="mb-2 flex items-center justify-between rounded-lg bg-gray-100 p-3 hover:bg-gray-200"
+                      className="mb-2 flex items-center justify-between rounded-lg bg-gray-200 p-2 hover:bg-gray-200"
                     >
                       <button
+                        type="button"
+                        title="Select Chat"
                         onClick={() => onSelect(chat.id)}
                         className="text-md flex-1 truncate text-left"
                       >

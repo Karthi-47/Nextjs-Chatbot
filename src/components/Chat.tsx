@@ -104,7 +104,7 @@ export default function Chat({
   };
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col pb-28 pt-12">
       {/* Chat Messages */}
       <div className="scrollbar-hide flex flex-1 flex-col items-center space-y-4 overflow-y-auto p-4 md:items-start">
         {/* Show "Start a new chat" when no messages */}
@@ -163,6 +163,7 @@ export default function Chat({
         className={`sticky bottom-0 p-6 transition-all duration-300 ${
           isSidebarOpen ? 'mx-auto w-[calc(100%-20rem)]' : 'w-full'
         }`}
+        style={{ position: 'fixed', bottom: 0, width: '100%' }} // Ensure input stays at the bottom
       >
         <div className="mx-auto flex max-w-2xl items-center rounded-lg border border-gray-500 bg-gray-200 p-1">
           <input
