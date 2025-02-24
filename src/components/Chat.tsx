@@ -53,7 +53,7 @@ export default function Chat({
       window.dispatchEvent(new Event('storage'));
       setIsNewChat(true);
     }
-  }, [messages, chatId]);
+  }, [messages, chatId, isNewChat]);
 
   // Auto-scroll to the latest message
   useEffect(() => {
@@ -104,7 +104,7 @@ export default function Chat({
   };
 
   return (
-    <div className="flex h-screen flex-col pb-28 pt-12">
+    <div className="flex h-screen flex-col pb-28 pt-24 sm:pt-12">
       {/* Chat Messages */}
       <div className="scrollbar-hide flex flex-1 flex-col items-center space-y-4 overflow-y-auto p-4 md:items-start">
         {/* Show "Start a new chat" when no messages */}
@@ -165,7 +165,7 @@ export default function Chat({
         }`}
         style={{
           position: messages.length === 0 ? 'absolute' : 'fixed', // Use absolute for center, fixed for bottom
-          bottom: messages.length === 0 ? '50%' : '0', // Center when no messages, bottom otherwise
+          bottom: messages.length === 0 ? '40%' : '0', // Center when no messages, bottom otherwise
           transform: messages.length === 0 ? 'translateY(100%)' : 'none', // Center vertically
         }}
       >

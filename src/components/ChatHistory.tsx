@@ -83,7 +83,7 @@ export default function ChatHistory({
   // Modified function to close the sidebar on mobile when "New Chat" is clicked
   const handleNewChat = () => {
     onNewChat();
-    if (isMobile) {
+    if (isMobile && isSidebarOpen) {
       onToggleSidebar(); // Close the sidebar only on mobile
     }
   };
@@ -118,6 +118,34 @@ export default function ChatHistory({
         </button>
       )}
 
+      {/* Toggle Sidebar Button (Mobile) */}
+      {!isSidebarOpen && (
+        <button
+          type="button"
+          title="NewChat"
+          onClick={handleNewChat}
+          className="fixed left-16 top-20 z-50 rounded-lg bg-white p-2 shadow-md"
+        >
+          <svg
+            className="size-7 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
+            />
+          </svg>
+        </button>
+      )}
+
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 top-16 z-50 mt-2 w-72 bg-white shadow-lg transition-transform duration-300 ${
@@ -127,26 +155,6 @@ export default function ChatHistory({
       >
         {/* Header */}
         <div className="flex items-center justify-between border-b bg-gray-300 p-3">
-          <button type="button" title="NewChat" onClick={handleNewChat} className="rounded-lg p-2 hover:bg-gray-100">
-            <svg
-              className="size-7 text-gray-800 dark:text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
-              />
-            </svg>
-          </button>
-          <h2 className="text-lg font-semibold">Chat History</h2>
           <button type="button" title="ToggleSidebar" onClick={onToggleSidebar} className="rounded-lg p-2 hover:bg-gray-100">
             <svg
               className="size-7 text-gray-800 dark:text-white"
@@ -163,6 +171,26 @@ export default function ChatHistory({
                 strokeLinejoin="round"
                 strokeWidth="2"
                 d="M8.99994 10 7 11.9999l1.99994 2M12 5v14M5 4h14c.5523 0 1 .44772 1 1v14c0 .5523-.4477 1-1 1H5c-.55228 0-1-.4477-1-1V5c0-.55228.44772-1 1-1Z"
+              />
+            </svg>
+          </button>
+          <h2 className="text-lg font-semibold">Chatbot</h2>
+          <button type="button" title="NewChat" onClick={handleNewChat} className="rounded-lg p-2 hover:bg-gray-100">
+            <svg
+              className="size-7 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
               />
             </svg>
           </button>
